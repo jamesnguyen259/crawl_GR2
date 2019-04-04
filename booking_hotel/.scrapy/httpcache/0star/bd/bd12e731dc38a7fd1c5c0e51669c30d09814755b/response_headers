@@ -1,0 +1,7 @@
+X-Xss-Protection: 1; mode=block
+Content-Encoding: gzip
+Strict-Transport-Security: max-age=604800
+Vary: Accept-Encoding, User-Agent
+Server: nginx
+Date: Wed, 03 Apr 2019 04:09:54 GMT
+Content-Type: text/plain; charset=UTF-8

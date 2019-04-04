@@ -1,0 +1,100 @@
+doctype html
+html
+    head
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        link(href='stylesheets/style.css', rel='stylesheet', type='text/css', media='all')
+        link(href='http://fonts.googleapis.com/css?family=Montserrat', rel='stylesheet', type='text/css')
+        link(href='http://fonts.googleapis.com/css?family=Dosis', rel='stylesheet', type='text/css')
+        block extraHeader
+    body
+        block header
+            .header-top
+                .wrap
+                    .logo
+                        a(href='index.html')
+                            img(src='images/logo.png', alt='')
+                    .cssmenu
+                        nav#nav(role='navigation')
+                            a(href='#nav', title='Show navigation') Show navigation
+                            a(href='#', title='Hide navigation') Hide navigation
+                            ul.clearfix
+                                li.active
+                                    a(href='index.html') Home
+                                li
+                                    a(href='start.html')
+                                        span Get Started
+                                li
+                                    a(href='work.html')
+                                        span How it Works
+                                li
+                                    a(href='pricing.html') Pricing
+                                li
+                                    a(href='support.html') Support
+                                .clear
+                    .buttons
+                        .login_btn
+                            a(href='login.html') Login / Signup
+                        .get_btn
+                            a(href='start.html') Get Listed Today
+                        .clear
+                    .clear
+                    h2.head
+                        | Find the
+                        span.m_1 next event
+                        | You'll want
+                        span.m_1 to attend
+        block content
+        block footer
+            .footer
+                .wrap
+                    .footer-menu
+                        ul
+                            li.active
+                                a(href='index.html') Home
+                            li
+                                a(href='about.html') About eco
+                            li
+                                a(href='work.html') How it works
+                            li
+                                a(href='industries.html') Industries
+                            li
+                                a(href='features.html') Features
+                            li
+                                a(href='pricing.html') Pricing
+                            li
+                                a(href='faq.html') Faq's
+                            li
+                                a(href='features.html') Privacy policy
+                            li
+                                a(href='blog.html') Blog
+                            li
+                                a(href='work.html') Terms of service
+                            .clear
+                    .footer-bottom
+                        .copy
+                            p
+                                | © 2014 Template by
+                                a(href='http://w3layouts.com', target='_blank')  w3layouts
+                        .social
+                            ul
+                                li.facebook
+                                    a(href='#')
+                                        span
+                                li.twitter
+                                    a(href='#')
+                                        span
+                                li.linked
+                                    a(href='#')
+                                        span
+                                li.arrow
+                                    a(href='#')
+                                        span
+                                li.dot
+                                    a(href='#')
+                                        span
+                                li.rss
+                                    a(href='#')
+                                        span
+                        .clear
+        block scripts

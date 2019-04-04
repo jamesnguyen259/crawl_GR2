@@ -1,0 +1,11 @@
+X-Recruiting: Like HTTP headers? Come write ours: https://careers.booking.com
+X-Content-Type-Options: nosniff
+Content-Encoding: gzip
+Set-Cookie: bkng=11UmFuZG9tSVYkc2RlIyh9Yaa29%2F3xUOLbca8KLfxLPecnZbxNuKUW%2FD73jErcuOh22Ke7D20RnJtRzthcHcBILDhVYWmfOrF7Xwt2w4o4nn47p6sX6mTs5jYcFXqA5u8dH0va9JeFcsT5aSm1Dpo84od2BTg183P01l7Y7fPLDk6Z58fIxZWOapCs2CRGBj8aj9Ak6ucQQ7I%3D; domain=.booking.com; path=/; expires=Mon, 01-Apr-2024 04:23:46 GMT; Secure; HTTPOnly
+Strict-Transport-Security: max-age=604800
+Vary: Accept-Encoding, User-Agent
+Server: nginx
+X-Xss-Protection: 1; mode=block
+Cache-Control: private
+Date: Wed, 03 Apr 2019 04:23:46 GMT
+Content-Type: text/html; charset=UTF-8
