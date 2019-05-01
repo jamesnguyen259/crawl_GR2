@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from booking_hotel.items import BookingHotelItem
+from geopy.geocoders import ArcGIS
 
 
 class ThreeStarSpider(scrapy.Spider):
@@ -14,8 +15,8 @@ class ThreeStarSpider(scrapy.Spider):
             item = BookingHotelItem()
             link =  "https://www.booking.com" + selector.css("a.hotel_name_link.url::attr(href)").extract_first().encode("utf-8").replace("\n","")
             #get image_url
-            image = selector.css("img.hotel_image::attr(src)").extract_first().encode("utf-8").replace("\n","")
-            item['image'] = image
+            image_url = selector.css("img.hotel_image::attr(src)").extract_first().encode("utf-8").replace("\n","")
+            item['image_url'] = image_url
             yield response.follow(link, callback=self.parse_item, meta={'item' : item})
 
         next_pages = response.css("a.bui-pagination__link.paging-next")
@@ -25,6 +26,7 @@ class ThreeStarSpider(scrapy.Spider):
             # print link
     def parse_item(self, response):
         item = response.meta['item']
+        geolocator = ArcGIS()
         #get name
         try:
             name = response.css("h2.hp__hotel-name::text").extract()[1].encode("utf-8").replace("\n","")
@@ -35,14 +37,17 @@ class ThreeStarSpider(scrapy.Spider):
         item['rating'] = "3"
         #get url
         try:
-            url =response.url
-            item['url'] = url
+            source_url = response.url
+            item['source_url'] = source_url
         except:
             pass
         #get location
         try:
             location = response.css("span.hp_address_subtitle.js-hp_address_subtitle.jq_tooltip::text").extract_first().encode("utf-8").replace("\n","")
             item['location'] = location
+            address = geolocator.geocode(location, timeout=3)
+            item['lat'] = address.latitude
+            item['lng'] = address.longitude
         except:
             pass
         #get description

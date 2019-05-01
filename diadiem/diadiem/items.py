@@ -12,15 +12,18 @@ class HotelItem(scrapy.Item):
     # define the fields for your item here like:
     name = scrapy.Field()
     location = scrapy.Field()
+    lat = scrapy.Field()
+    lng = scrapy.Field()
     source_url = scrapy.Field()
     image_url = scrapy.Field()
     rating = scrapy.Field()
     description = scrapy.Field()
-    # pass
 
 class RestaurantItem(scrapy.Item):
     name = scrapy.Field()
     location = scrapy.Field()
+    lat = scrapy.Field()
+    lng = scrapy.Field()
     source_url = scrapy.Field()
     time = scrapy.Field()
     price = scrapy.Field()
@@ -31,6 +34,8 @@ class RestaurantItem(scrapy.Item):
 class FamousPlaceItem(scrapy.Item):
     name = scrapy.Field()
     location = scrapy.Field()
+    lat = scrapy.Field()
+    lng = scrapy.Field()
     phone = scrapy.Field()
     source_url = scrapy.Field()
     image_url = scrapy.Field()

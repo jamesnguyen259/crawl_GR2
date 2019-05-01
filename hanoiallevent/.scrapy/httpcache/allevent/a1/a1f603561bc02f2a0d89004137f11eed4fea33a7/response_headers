@@ -1,0 +1,13 @@
+Expect-Ct: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+Content-Encoding: gzip
+Set-Cookie: __cfduid=de33de46b6447220de727c1e26e53fed01556551033; expires=Tue, 28-Apr-20 15:17:13 GMT; path=/; domain=.allevents.in; HttpOnly
+Cf-Cache-Status: REVALIDATED
+Expires: Wed, 01 May 2019 15:17:14 GMT
+Vary: Accept-Encoding
+Server: cloudflare
+Last-Modified: Sat, 02 Jan 2016 10:44:53 GMT
+Etag: W/"5687aa25-73"
+Cache-Control: public, max-age=172800
+Date: Mon, 29 Apr 2019 15:17:14 GMT
+Cf-Ray: 4cf23dd9ba54c757-HAN
+Content-Type: text/plain; charset=utf-8

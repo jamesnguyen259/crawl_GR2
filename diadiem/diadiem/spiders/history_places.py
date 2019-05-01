@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from diadiem.items import FamousPlaceItem
+from geopy.geocoders import ArcGIS
 
 class HistoryPlacesSpider(scrapy.Spider):
     name = 'history_places'
@@ -18,6 +19,7 @@ class HistoryPlacesSpider(scrapy.Spider):
 
     def parse_item(self, response):
         item = FamousPlaceItem()
+        geolocator = ArcGIS()
         #get name:
         try:
             name = response.css("div.col-md-7 h1::text").extract_first().encode("utf-8")
@@ -28,6 +30,11 @@ class HistoryPlacesSpider(scrapy.Spider):
         try:
             location = ''.join(response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[1]/div[2]/div[4]//text()').extract()).strip().encode("utf-8")
             item['location'] = location
+            address = geolocator.geocode(location, timeout=None)
+            lat = address.latitude
+            item['lat'] = lat
+            lng = address.longitude
+            item['lng'] = lng
         except:
             pass
         #get phone:
@@ -44,7 +51,7 @@ class HistoryPlacesSpider(scrapy.Spider):
             pass
         #get image_url:
         try:
-            image_url = "https://diadiem.co" + response.css('div.col-md-5 img::attr(src)').extract_first().encode("utf-8")
+            image_url = response.css('div.col-md-5 img::attr(src)').extract_first().encode("utf-8")
             item['image_url'] = image_url
         except:
             pass

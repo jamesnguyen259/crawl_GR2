@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from geopy.geocoders import ArcGIS
 from diadiem.items import RestaurantItem
 
 class RestaurantsSpider(scrapy.Spider):
     name = 'restaurants'
     allowed_domains = ['diadiem.co']
     start_urls = []
-    max_page = 2
+    max_page = 278
     for page in range(1,max_page+1):
         start_urls.append('https://diadiem.co/ha-noi/nha-hang-c292-%s.html'% str(page))
 
@@ -18,6 +19,7 @@ class RestaurantsSpider(scrapy.Spider):
 
     def parse_item(self, response):
         item = RestaurantItem()
+        geolocator = ArcGIS()
         #get name:
         try:
             name = response.css("div.col-md-7 h1::text").extract_first().encode("utf-8").strip()
@@ -26,14 +28,17 @@ class RestaurantsSpider(scrapy.Spider):
             pass
         #get location:
         try:
-            location = ''.join(response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[1]/div[2]/div[4]//text()').extract()).strip().encode("utf-8")
+            location = ''.join(response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[1]/div[2]/div[4]//text()').extract()).strip().encode("utf-8").replace(" Thành phố","").replace("  ","")
             item['location'] = location
+            address = geolocator.geocode(location)
+            item['lat'] = address.latitude
+            item['lng'] = address.longitude
         except:
             pass
         #get url
         try:
             source_url = response.url
-            item['source_url'] = url
+            item['source_url'] = source_url
         except:
             pass
         #get time
@@ -52,7 +57,7 @@ class RestaurantsSpider(scrapy.Spider):
             item['phone'] = "N/A"
         #get image:
         try:
-            image_url = "https://diadiem.co" + response.css('div.col-md-5 img::attr(src)').extract_first().encode("utf-8")
+            image_url = response.css('div.col-md-5 img::attr(src)').extract_first().encode("utf-8")
             item['image_url'] = image_url
         except:
             pass

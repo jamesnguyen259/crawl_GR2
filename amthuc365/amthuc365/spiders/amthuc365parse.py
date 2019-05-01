@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from geopy.geocoders import ArcGIS
 from amthuc365.items import Amthuc365Item
 
 class Amthuc365parseSpider(scrapy.Spider):
@@ -21,6 +22,7 @@ class Amthuc365parseSpider(scrapy.Spider):
 
     def parse_item(self, response):
         item = Amthuc365Item()
+        geolocator = ArcGIS()
         #get name
         try:
             item['name'] = response.css("div.h-info h1::text").extract_first().encode("utf-8")
@@ -28,15 +30,19 @@ class Amthuc365parseSpider(scrapy.Spider):
             pass
         #get location
         try:
-            item['location'] = ''.join(response.xpath('//div[contains(concat(" ",normalize-space(@class)," ")," h-info ")]/p[contains(concat(" ",normalize-space(@class)," ")," address ")]//text()').extract()).strip().encode("utf-8")
+            location = ''.join(response.xpath('//div[contains(concat(" ",normalize-space(@class)," ")," h-info ")]/p[contains(concat(" ",normalize-space(@class)," ")," address ")]//text()').extract()).strip().encode("utf-8")
+            item['location'] = location
+            address = geolocator.geocode(location)
+            item['lat'] = address.latitude
+            item['lng'] = address.longitude
         except:
             pass
         #get url
         try:
-            url = response.css("p.rest-web a::attr(href)").extract_first().encode("utf-8")
-            if url.count("/") == 1:
-                url = "http://www.amthuc365.vn" + url
-            item['url'] = url
+            source_url = response.css("p.rest-web a::attr(href)").extract_first().encode("utf-8")
+            if source_url.count("/") == 1:
+                source_url = "http://www.amthuc365.vn" +  source_url
+            item['source_url'] = source_url
         except:
             pass
         #get time
@@ -58,7 +64,7 @@ class Amthuc365parseSpider(scrapy.Spider):
             pass
         #get image:
         try:
-            item['image'] = response.css("div.img-info img::attr(src)").extract_first().encode("utf-8")
+            item['image_url'] = response.css("div.img-info img::attr(src)").extract_first().encode("utf-8")
         except:
             pass
         #get description

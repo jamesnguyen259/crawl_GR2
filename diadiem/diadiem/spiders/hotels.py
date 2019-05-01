@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from diadiem.items import HotelItem
+from geopy.geocoders import ArcGIS
+# import logging
 
 class HotelsSpider(scrapy.Spider):
     name = 'hotels'
     allowed_domains = ['diadiem.co']
     start_urls = []
-    max_page = 2
-    for page in range(1,max_page+1):
+    max_page = 169
+    for page in range(1, max_page+1):
         start_urls.append('https://diadiem.co/ha-noi/khach-san-c46-%s.html'% str(page))
 
     def parse(self, response):
@@ -18,16 +20,22 @@ class HotelsSpider(scrapy.Spider):
 
     def parse_item(self, response):
         item = HotelItem()
+        geolocator = ArcGIS()
         #get name:
         try:
-            name = response.css("div.col-md-7 h1::text").extract_first().encode("utf-8")
+            name = response.css("div.col-md-7 h1::text").extract_first().encode("utf-8").strip()
             item['name'] = name
         except:
             pass
         #get location:
         try:
-            location = ''.join(response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[1]/div[2]/div[4]//text()').extract()).strip().encode("utf-8")
+            location = ''.join(response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[1]/div[2]/div[4]//text()').extract()).encode("utf-8").strip().replace(" Thành phố","").replace("  ","")
             item['location'] = location
+            address = geolocator.geocode(location, timeout=None)
+            lat = address.latitude
+            item['lat'] = lat
+            lng = address.longitude
+            item['lng'] = lng
         except:
             pass
         #get url
@@ -38,7 +46,7 @@ class HotelsSpider(scrapy.Spider):
             pass
         #get image:
         try:
-            image_url = "https://diadiem.co" + response.css('div.col-md-5 img::attr(src)').extract_first().encode("utf-8")
+            image_url = response.css('div.col-md-5 img::attr(src)').extract_first().encode("utf-8")
             item['image_url'] = image_url
         except:
             pass
@@ -46,10 +54,9 @@ class HotelsSpider(scrapy.Spider):
         item['rating'] = "Not rated"
         #get description:
         try:
-            description = ''.join(response.xpath('//div[contains(concat(" ",normalize-space(@class)," ")," location-content ")]//text()').extract()).strip().encode("utf-8") + \
-            "\nTiện ích: \n" + ''.join(response.xpath('//div[@class="tab-content"]//text()').extract()).strip().encode("utf-8").replace("\t", "")
+            description = ''.join(response.xpath('//div[contains(concat(" ",normalize-space(@class)," ")," location-content ")]//text()').extract()).encode("utf-8").strip() + \
+            "\nTiện ích: \n" + ''.join(response.xpath('//div[@class="tab-content"]//text()').extract()).encode("utf-8").strip().replace("\t", "")
             item['description'] = description
         except:
             pass
-
         yield item

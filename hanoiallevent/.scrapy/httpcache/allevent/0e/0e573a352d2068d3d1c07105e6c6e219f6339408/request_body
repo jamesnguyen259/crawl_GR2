@@ -1,0 +1,11 @@
+{
+    "cookies": [], 
+    "headers": {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+        "Accept-Language": "en", 
+        "Cookie": "__cfduid=de33de46b6447220de727c1e26e53fed01556551033", 
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
+    }, 
+    "lua_source": "\nfunction main(splash)\n    splash:init_cookies(splash.args.cookies)\n    local url = splash.args.url\n    assert(splash:go(url))\n    assert(splash:wait(2))\n    return {\n        cookies = splash:get_cookies(),\n        html = splash:html()\n    }\nend\n", 
+    "url": "https://allevents.in/hanoi/all?page=2"
+}
