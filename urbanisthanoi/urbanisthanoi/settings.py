@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for allevent_test project
+# Scrapy settings for urbanisthanoi project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,30 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'allevent_test'
+BOT_NAME = 'urbanisthanoi'
 
-SPIDER_MODULES = ['allevent_test.spiders']
-NEWSPIDER_MODULE = 'allevent_test.spiders'
+SPIDER_MODULES = ['urbanisthanoi.spiders']
+NEWSPIDER_MODULE = 'urbanisthanoi.spiders'
 
-#SPLASH
-SPLASH_URL = 'http://localhost:8050'
-DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
-HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
-COOKIES_ENABLED = True
-SPLASH_COOKIES_DEBUG = False
-
-SPIDER_MIDDLEWARES = {
-    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
-}
-DOWNLOADER_MIDDLEWARES = {
-    'scrapy_splash.SplashCookiesMiddleware': 723,
-    'scrapy_splash.SplashMiddleware': 725,
-    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 400,
-}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'allevent_test (+http://www.yourdomain.com)'
+#USER_AGENT = 'urbanisthanoi (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -63,13 +47,13 @@ DOWNLOAD_DELAY = 1.5
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'allevent_test.middlewares.AlleventTestSpiderMiddleware': 543,
+#    'urbanisthanoi.middlewares.UrbanisthanoiSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'allevent_test.middlewares.AlleventTestDownloaderMiddleware': 543,
+#    'urbanisthanoi.middlewares.UrbanisthanoiDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -80,13 +64,13 @@ DOWNLOAD_DELAY = 1.5
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'allevent_test.pipelines.AlleventTestPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'urbanisthanoi.pipelines.UrbanisthanoiPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
-AUTOTHROTTLE_ENABLED = True
+#AUTOTHROTTLE_ENABLED = True
 # The initial download delay
 AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies

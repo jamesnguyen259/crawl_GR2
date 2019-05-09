@@ -98,6 +98,7 @@ class DiadiemPipeline(object):
                 result = self.cursor.fetchone()
                 while result is not None:
                     if item['source_url'] == result[6]:
+                        logging.info("Item crawled.")
                         flag = True
                         break
                     else:

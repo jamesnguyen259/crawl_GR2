@@ -8,13 +8,15 @@
 import scrapy
 
 
-class AlleventTestItem(scrapy.Item):
-    # define the fields for your item here like:
+class UrbanisthanoiItem(scrapy.Item):
     name = scrapy.Field()
     location = scrapy.Field()
-    # lat = scrapy.Field()
-    # lng = scrapy.Field()
+    lat = scrapy.Field()
+    lng = scrapy.Field()
     start_time = scrapy.Field()
     end_time = scrapy.Field()
+    source_url = scrapy.Field()
+    image_url = scrapy.Field()
+    description = scrapy.Field()
+    organizer_name = scrapy.Field()
 
-    # pass

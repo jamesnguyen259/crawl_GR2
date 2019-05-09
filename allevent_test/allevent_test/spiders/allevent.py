@@ -2,19 +2,21 @@
 import scrapy
 from scrapy_splash import SplashRequest
 from allevent_test.items import AlleventTestItem
-from geopy.geocoders import ArcGIS
+# from geopy.geocoders import ArcGIS
 import sys
 from dateutil import parser
 from datetime import datetime
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
 script = """
 function main(splash)
+    splash.resource_timeout = 3
     splash:init_cookies(splash.args.cookies)
     local url = splash.args.url
     assert(splash:go(url))
-    assert(splash:wait(2))
+    assert(splash:wait(5))
     return {
         cookies = splash:get_cookies(),
         html = splash:html()
@@ -22,6 +24,19 @@ function main(splash)
 end
 """
 
+script2 = """
+function main(splash)
+    splash.resource_timeout = 3
+    splash:init_cookies(splash.args.cookies)
+    local url = splash.args.url
+    assert(splash:go(url))
+    assert(splash:wait(0.5))
+    return {
+        cookies = splash:get_cookies(),
+        html = splash:html()
+    }
+end
+"""
 
 class AlleventSpider(scrapy.Spider):
     name = 'allevent'
@@ -34,12 +49,12 @@ class AlleventSpider(scrapy.Spider):
 
     def parse(self, response):
         url_selectors = response.css("div.event-body.clearfix div.left h3 a::attr(href)")
-        for url in url_selectors.extract():
-            yield SplashRequest(url.encode('utf-8'), callback=self.parse_item, endpoint='execute', args={'lua_source': script})
+        for url in url_selectors.extract()[:10]:
+            yield SplashRequest(url.encode('utf-8'), callback=self.parse_item, endpoint='execute', args={'lua_source': script2})
 
     def parse_item(self, response):
         item = AlleventTestItem()
-        geolocator = ArcGIS()
+        # geolocator = ArcGIS()
         #get_name
         try:
             name = response.css('h1.overlay-h1::text').extract_first().encode("utf-8")
@@ -49,9 +64,9 @@ class AlleventSpider(scrapy.Spider):
 
         try:
             location = response.css('span.venue-popover.ml5::attr(data-content)').extract_first().encode("utf-8")
-            address = geolocator.geocode(location)
-            item['lat'] = address.latitude
-            item['lng'] = address.longitude
+            # address = geolocator.geocode(location)
+            # item['lat'] = address.latitude
+            # item['lng'] = address.longitude
             item['location'] = location
         except:
             pass

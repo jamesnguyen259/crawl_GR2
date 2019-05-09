@@ -9,12 +9,26 @@ from datetime import datetime
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
 script = """
 function main(splash)
     splash:init_cookies(splash.args.cookies)
     local url = splash.args.url
     assert(splash:go(url))
-    assert(splash:wait(2))
+    assert(splash:wait(5))
+    return {
+        cookies = splash:get_cookies(),
+        html = splash:html()
+    }
+end
+"""
+
+script2 = """
+function main(splash)
+    splash:init_cookies(splash.args.cookies)
+    local url = splash.args.url
+    assert(splash:go(url))
+    assert(splash:wait(0.5))
     return {
         cookies = splash:get_cookies(),
         html = splash:html()
@@ -25,9 +39,10 @@ end
 class AlleventSpider(scrapy.Spider):
     name = 'allevent'
     allowed_domains = ['allevents.in']
-    start_urls = []
-    max_page = 8
-    for page in range(2,max_page+1):
+    start_urls = ['https://allevents.in/hanoi/all?page=1']
+    #get 1000 events
+    max_page = 10
+    for page in range(1,max_page+1):
         start_urls.append('https://allevents.in/hanoi/all?page=%s'% str(page))
 
     def start_requests(self):
@@ -37,7 +52,7 @@ class AlleventSpider(scrapy.Spider):
     def parse(self, response):
         url_selectors = response.css("div.event-body.clearfix div.left h3 a::attr(href)")
         for url in url_selectors.extract():
-            yield SplashRequest(url.encode('utf-8'), callback=self.parse_item, endpoint='execute', args={'lua_source': script})
+            yield SplashRequest(url.encode('utf-8'), callback=self.parse_item, endpoint='execute', args={'lua_source': script2})
 
     def parse_item(self, response):
         item = HanoialleventItem()

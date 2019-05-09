@@ -2,6 +2,7 @@
 import scrapy
 from diadiem.items import FamousPlaceItem
 from geopy.geocoders import ArcGIS
+import time
 
 class PagodaSpider(scrapy.Spider):
     name = 'pagodas'
@@ -31,6 +32,7 @@ class PagodaSpider(scrapy.Spider):
             location = ''.join(response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[1]/div[2]/div[4]//text()').extract()).strip().encode("utf-8")
             item['location'] = location
             address = geolocator.geocode(location, timeout=None)
+            time.sleep(3)
             lat = address.latitude
             item['lat'] = lat
             lng = address.longitude
